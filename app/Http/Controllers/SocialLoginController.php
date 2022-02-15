@@ -30,8 +30,8 @@ class SocialLoginController extends Controller
             if ($finduser) {
 
                 Auth::login($finduser);
-                session()->put('facebook',$finduser->name);
-                return redirect()->intended('dashboard');
+                session()->put('facebook', $finduser->name);
+                return redirect()->route('dashboard');
             } else {
                 $newUser = User::create([
                     'name' => $user->name,
@@ -41,8 +41,8 @@ class SocialLoginController extends Controller
                 ]);
 
                 Auth::login($newUser);
-                session()->put('facebook',$user->name);
-                return redirect()->intended('dashboard');
+                session()->put('facebook', $user->name);
+                return redirect()->route('dashboard');
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -67,7 +67,7 @@ class SocialLoginController extends Controller
             if ($finduser) {
 
                 Auth::login($finduser);
-                session()->put('google',$finduser->name);
+                session()->put('google', $finduser->name);
                 return redirect()->intended('dashboard');
             } else {
                 $newUser = User::create([
@@ -78,11 +78,19 @@ class SocialLoginController extends Controller
                 ]);
 
                 Auth::login($newUser);
-                session()->put('google',$user->name);
+                session()->put('google', $user->name);
                 return redirect()->intended('dashboard');
             }
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    public function logout()
+    {
+        session()->forget('facebook');
+        session()->forget('google');
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

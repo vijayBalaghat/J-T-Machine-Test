@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('login');
 
 // Facebook Login
 Route::get('auth/facebook',[SocialLoginController::class,'getFBuser'])->name('fb.login');
@@ -27,10 +27,7 @@ Route::get('auth/facebook/callback',[SocialLoginController::class,'getFBCallback
 Route::get('auth/google',[SocialLoginController::class,'getGoogleuser'])->name('gmail.login');
 Route::get('auth/google/callback',[SocialLoginController::class,'getGoogleCallback'])->name('gmail.callback');
 
-Route::view('dashboard','dashboard');
-Route::get('/logout', function () {
-    session()->forget('facebook');
-    session()->forget('google');
-    Auth::logout();
-    return view('auth.login');
-});
+
+Route::view('dashboard','dashboard')->name('dashboard');
+
+Route::get('/logout',[SocialLoginController::class,'logout']);
